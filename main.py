@@ -125,7 +125,7 @@ def add_event(access_token, summary, color_hex, start_datetime_est):
 
 def call_gpt(user_input):
     client = openai.OpenAI()
-    now = datetime.datetime.now().strftime("%Y-%m-%d")
+    now = datetime.datetime.now(pytz.timezone("America/New_York")).isoformat()
     prompt = (
         "Assume today's date is " + now + ".\n"
         "Extract from this text the title, the color (as hex if named or hex given, else null), "
