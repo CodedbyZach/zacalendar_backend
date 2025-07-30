@@ -131,7 +131,7 @@ def call_gpt(user_input):
         "Extract from this text the title, the color (as hex if named or hex given, else null), "
         "and the datetime (ISO format, or null if none).\n\n"
         f"Text: \"{user_input}\"\n\n"
-        "Return a JSON object with keys: title, color, datetime."
+        "Return ONLY a JSON object with keys: title, color, datetime."
         "If the date is not specified, set it to today at noon or tomorrow at noon if it's already past noon."
         "If the color is not mentioned, set it to teal."
         "If datetime is before or at now, return null for datetime."
@@ -141,6 +141,8 @@ def call_gpt(user_input):
         messages=[{"role": "user", "content": prompt}],
         temperature=0
     )
+    content = response.choices[0].message.content
+    print("GPT response:", content)
     return json.loads(response.choices[0].message.content)
 
 # FastAPI routes
