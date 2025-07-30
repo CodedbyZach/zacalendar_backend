@@ -15,6 +15,8 @@ import uvicorn
 from math import sqrt
 
 # ENV Secrets
+load_dotenv()
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
 AUTH_PASSWORD = os.getenv("AUTH_PASSWORD", "defaultpass")
 CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
@@ -136,7 +138,7 @@ def call_gpt(user_input):
         "If the date is not specified, set it to today at noon or tomorrow at noon if it's already past noon."
         "If the color is not mentioned, set it to teal."
         "If datetime is earlier than now minus 2 minutes, return null for datetime."
-        "Tonight means the current day."
+        "Tonight means the current day, at PM."
     )
     response = client.chat.completions.create(
         model="gpt-4o",
