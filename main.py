@@ -142,6 +142,10 @@ def call_gpt(user_input):
         temperature=0
     )
     content = response.choices[0].message.content
+
+    if content.startswith("```"):
+        content = "\n".join(content.split("\n")[1:-1])
+        
     print("GPT response:", content)
     return json.loads(response.choices[0].message.content)
 
