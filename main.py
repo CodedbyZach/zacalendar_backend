@@ -127,7 +127,7 @@ def call_gpt(user_input):
     client = openai.OpenAI()
     now = datetime.datetime.now(pytz.timezone("America/New_York")).isoformat()
     prompt = (
-        "Assume today's date is " + now + ".\n"
+        "Assume the current datetime is " + now + ".\n"
         "Extract from this text the title, the color (as hex if named or hex given, else null), "
         "and the datetime (ISO format, or null if none).\n\n"
         f"Text: \"{user_input}\"\n\n"
@@ -148,6 +148,9 @@ def call_gpt(user_input):
         content = "\n".join(content.split("\n")[1:-1])
 
     print("GPT response:", content)
+    print("DEBUG now:", now)
+    print("DEBUG input:", user_input)
+
     gpt_data = json.loads(content)
 
     if gpt_data.get("datetime"):
