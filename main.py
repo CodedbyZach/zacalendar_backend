@@ -134,7 +134,7 @@ def call_gpt(user_input):
         "Return ONLY a JSON object with keys: title, color, datetime."
         "If the date is not specified, set it to today at noon or tomorrow at noon if it's already past noon."
         "If the color is not mentioned, set it to teal."
-        "If datetime is before or at now, return null for datetime."
+        "If datetime is earlier than now minus 2 minutes, return null for datetime."
         "Tonight means the current day."
     )
     response = client.chat.completions.create(
