@@ -10,6 +10,7 @@ import openai
 import datetime
 import requests
 import pytz
+import uvicorn
 from math import sqrt
 
 # ENV Secrets
@@ -188,3 +189,7 @@ async def process_audio(
     event_result = add_event(access_token, summary, color_hex, start_dt)
 
     return {"text": text, "parsed": gpt_data, "calendar_event": event_result}
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)
