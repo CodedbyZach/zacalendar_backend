@@ -7,7 +7,7 @@ import re
 import json
 import dateparser
 import openai
-import datetime import timedelta
+from datetime import timedelta
 import requests
 import pytz
 import uvicorn
