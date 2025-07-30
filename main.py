@@ -163,7 +163,7 @@ def call_gpt(user_input):
             print("Datetime parse error:", e)
             gpt_data["datetime"] = None
 
-    return json.loads(gpt_data)
+    return gpt_data
 
 # FastAPI routes
 
