@@ -145,9 +145,9 @@ def call_gpt(user_input):
 
     if content.startswith("```"):
         content = "\n".join(content.split("\n")[1:-1])
-        
+
     print("GPT response:", content)
-    return json.loads(response.choices[0].message.content)
+    return json.loads(content)
 
 # FastAPI routes
 
