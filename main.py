@@ -114,7 +114,10 @@ def add_event(access_token, summary, color_hex, start_datetime_est):
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json"
     }
-    localized = EST.localize(start_datetime_est)
+    if start_datetime_est.tzinfo is None:
+        localized = EST.localize(start_datetime_est)
+    else:
+        localized = start_datetime_est.astimezone(EST)
     iso_dt = localized.isoformat()
     color_id = get_nearest_color_id(color_hex or "#008080")
 
