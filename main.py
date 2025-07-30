@@ -148,7 +148,7 @@ def call_gpt(user_input):
 @app.post("/speech-to-calendar")
 async def process_audio(
     file: UploadFile = File(...), 
-    authorization: str = Header(...)
+    authorization: str = Header(..., alias="Authorization")
 ):
     if authorization != AUTH_PASSWORD:
         raise HTTPException(status_code=401, detail="Unauthorized")
