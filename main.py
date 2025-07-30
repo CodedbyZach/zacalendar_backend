@@ -1,19 +1,20 @@
+import datetime
 from fastapi import FastAPI, File, UploadFile, HTTPException, Header
-import speech_recognition as sr
 from pydub import AudioSegment
-import io
-import os
+from dateutil import parser
 from dotenv import load_dotenv
+from math import sqrt
+from datetime import timedelta
+import io
+import speech_recognition as sr
+import os
 import re
 import json
 import dateparser
 import openai
-import datetime
-from datetime import timedelta
 import requests
 import pytz
 import uvicorn
-from math import sqrt
 
 # ENV Secrets
 load_dotenv()
