@@ -135,6 +135,7 @@ def call_gpt(user_input):
         "If the date is not specified, set it to today at noon or tomorrow at noon if it's already past noon."
         "If the color is not mentioned, set it to teal."
         "If datetime is before or at now, return null for datetime."
+        "Tonight means the current day."
     )
     response = client.chat.completions.create(
         model="gpt-4o",
@@ -147,7 +148,22 @@ def call_gpt(user_input):
         content = "\n".join(content.split("\n")[1:-1])
 
     print("GPT response:", content)
-    return json.loads(content)
+    gpt_data = json.loads(content)
+
+    if gpt_data.get("datetime"):
+        try:
+            tz = pytz.timezone("America/New_York")
+            now = datetime.datetime.now(tz)
+            dt = parser.parse(gpt_data["datetime"])
+            if dt.tzinfo is None:
+                dt = tz.localize(dt)
+            if dt <= now:
+                gpt_data["datetime"] = None
+        except Exception as e:
+            print("Datetime parse error:", e)
+            gpt_data["datetime"] = None
+
+    return json.loads(gpt_data)
 
 # FastAPI routes
 
