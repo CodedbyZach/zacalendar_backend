@@ -17,6 +17,7 @@ import pytz
 import uvicorn
 
 # ENV Secrets
+os.chdir("/root/cal_backend")
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
