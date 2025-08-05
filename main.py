@@ -145,6 +145,8 @@ def call_gpt(user_input):
         "If the color is not mentioned, set it to teal."
         "If datetime is earlier than now minus 2 minutes, return null for datetime."
         "Tonight means the current day, at PM."
+        "Today means the current day."
+        "Capitalize the first letter of the title."
     )
     response = client.chat.completions.create(
         model="gpt-4o",
