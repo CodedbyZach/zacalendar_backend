@@ -179,9 +179,9 @@ def call_gpt(user_input):
 
 # FastAPI routes
 
-@app.post("/speech-to-calendar")
-async def process_audio(
-    file: UploadFile = File(...), 
+@app.post("/speech-to-ai")
+async def speech_to_ai(
+    file: UploadFile = File(...),
     authorization: str = Header(..., alias="Authorization")
 ):
     if authorization != AUTH_PASSWORD:
@@ -212,18 +212,39 @@ async def process_audio(
         return {"text": "", "error": "Speech Recognition service error"}
 
     gpt_data = call_gpt(text)
-    dt = gpt_data.get("datetime")
-    if not dt:
-        return {"text": text, "error": "Invalid or past datetime in input"}
+    return {
+        "text": text,
+        "title": gpt_data.get("title"),
+        "datetime": gpt_data.get("datetime"),
+        "color": gpt_data.get("color"),
+        "parsed": gpt_data
+    }
+
+
+@app.post("/text-to-calendar")
+async def text_to_calendar(
+    payload: dict,
+    authorization: str = Header(..., alias="Authorization")
+):
+    if authorization != AUTH_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    summary = payload.get("text")
+    event_datetime = payload.get("datetime")  # ISO string
+    color_hex = payload.get("color")  # Hex string
+
+    if not summary or not event_datetime or not color_hex:
+        raise HTTPException(status_code=400, detail="Missing 'text', 'datetime', or 'color' in payload")
+
+    try:
+        start_dt = datetime.datetime.fromisoformat(event_datetime)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid datetime format. Use ISO format (YYYY-MM-DDTHH:MM:SS)")
 
     access_token = get_access_token()
-    summary = gpt_data.get("title") or "No Title"
-    color_hex = gpt_data.get("color") or "#008080"
-    start_dt = datetime.datetime.fromisoformat(dt)
     event_result = add_event(access_token, summary, color_hex, start_dt)
 
-    return {"text": text, "parsed": gpt_data, "calendar_event": event_result}
-
+    return {"text": summary, "calendar_event": event_result}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=False)
