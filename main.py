@@ -172,8 +172,6 @@ def call_gpt(user_input):
             dt = parser.parse(gpt_data["datetime"])
             if dt.tzinfo is None:
                 dt = tz.localize(dt)
-            if dt <= now - timedelta(minutes=2):
-                gpt_data["datetime"] = None
         except Exception as e:
             print("Datetime parse error:", e)
             gpt_data["datetime"] = None
