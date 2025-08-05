@@ -143,10 +143,11 @@ def call_gpt(user_input):
         "Return ONLY a JSON object with keys: title, color, datetime."
         "If the date is not specified, set it to today at noon or tomorrow at noon if it's already past noon."
         "If the color is not mentioned, set it to teal."
-        "If datetime is earlier than now minus 2 minutes, return null for datetime."
+        "If datetime is earlier than now minus 2 minutes, interpret it as the same time on the next day."
         "Tonight means the current day, at PM."
         "Today means the current day."
         "Capitalize the first letter of the title."
+        "Always convert natural language date/time (e.g., 'today at 1:00 p.m.', 'tomorrow', 'tonight') into a full ISO 8601 datetime with timezone offset America/New_York. Never return null for datetime unless there is no time reference at all."
     )
     response = client.chat.completions.create(
         model="gpt-4o",
